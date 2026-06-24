@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ölmezler Araç Servis Merkezi | Banaz/Uşak</title>
+    <meta name="description" content="Ölmezler Araç Servis Merkezi - Banaz/Uşak'ta profesyonel araç bakım ve onarım hizmetleri. Motor mekaniği, kaporta, elektrik, periyodik bakım ve daha fazlası.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-wrench"></i>
+                <span>Ölmezler<span class="logo-accent">Servis</span></span>
+            </a>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menü">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#anasayfa">Ana Sayfa</a></li>
+                <li><a href="#hizmetler">Hizmetler</a></li>
+                <li><a href="#hakkimizda">Hakkımızda</a></li>
+                <li><a href="#randevu">Randevu</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="https://wa.me/905379292946" class="btn-whatsapp-nav" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="anasayfa">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-badge"><i class="fas fa-shield-halved"></i> Banaz/Uşak'ın Güvenilir Servisi</div>
+            <h1>Ölmezler<br><span class="hero-accent">Araç Servis Merkezi</span></h1>
+            <p class="hero-desc">Aracınızın tüm bakım ve onarım ihtiyaçlarında profesyonel çözümler. Uzman kadro, orijinal yedek parça ve uygun fiyat garantisi.</p>
+            <div class="hero-buttons">
+                <a href="tel:+905379292946" class="btn btn-primary"><i class="fas fa-phone"></i> Hemen Ara</a>
+                <a href="https://wa.me/905379292946" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="#randevu" class="btn btn-outline"><i class="fas fa-calendar-check"></i> Randevu Al</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Yıl Tecrübe</span></div>
+                <div class="stat"><span class="stat-num">5000+</span><span class="stat-label">Mutlu Müşteri</span></div>
+                <div class="stat"><span class="stat-num">8</span><span class="stat-label">Uzmanlık Alanı</span></div>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <a href="#hizmetler"><i class="fas fa-chevron-down"></i></a>
+        </div>
+    </section>
+
+    <!-- HİZMETLER -->
+    <section class="services" id="hizmetler">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Hizmetlerimiz</span>
+                <h2>Aracınız İçin <span class="text-accent">Profesyonel</span> Çözümler</h2>
+                <p>Her marka ve model araç için kapsamlı servis hizmeti sunuyoruz.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" data-aos="fade-up">
+                    <div class="service-icon"><i class="fas fa-engine"></i></div>
+                    <h3>Motor Mekaniği</h3>
+                    <p>Motor revizyonu, triger değişimi, segman, supap ayarı ve tüm mekanik onarımlar.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="100">
+                    <div class="service-icon"><i class="fas fa-gears"></i></div>
+                    <h3>Şanzıman & Diferansiyel</h3>
+                    <p>Otomatik/manuel şanzıman tamiri, diferansiyel bakımı ve yağ değişimi.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="200">
+                    <div class="service-icon"><i class="fas fa-car-burst"></i></div>
+                    <h3>Kaporta & Boya</h3>
+                    <p>Hasar onarımı, boya, pasta-cila, kaporta düzeltme ve koruma uygulamaları.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="300">
+                    <div class="service-icon"><i class="fas fa-bolt"></i></div>
+                    <h3>Elektrik & Elektronik</h3>
+                    <p>Arıza tespiti, kablo tesisatı, akü, marş dinamosu, şarj dinamosu tamiri.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="400">
+                    <div class="service-icon"><i class="fas fa-oil-can"></i></div>
+                    <h3>Periyodik Bakım</h3>
+                    <p>Yağ değişimi, filtre değişimi, fren bakımı, antifriz ve genel kontrol.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="500">
+                    <div class="service-icon"><i class="fas fa-circle-notch"></i></div>
+                    <h3>Rot-Balans & Ön Düzen</h3>
+                    <p>Rot ayarı, balans, salıncak değişimi, rotil ve rotbaşı tamiri.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="600">
+                    <div class="service-icon"><i class="fas fa-snowflake"></i></div>
+                    <h3>Klima Servisi</h3>
+                    <p>Klima gazı dolumu, kompresör tamiri, evaporatör ve kondenser değişimi.</p>
+                </div>
+                <div class="service-card" data-aos="fade-up" data-delay="700">
+                    <div class="service-icon"><i class="fas fa-box-open"></i></div>
+                    <h3>Yedek Parça</h3>
+                    <p>Orijinal ve muadil yedek parça temini. Hızlı tedarik, uygun fiyat.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HAKKIMIZDA -->
+    <section class="about" id="hakkimizda">
+        <div class="container about-grid">
+            <div class="about-image">
+                <div class="about-img-placeholder">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Servis Fotoğrafı</span>
+                </div>
+                <div class="experience-badge">
+                    <span class="exp-num">15+</span>
+                    <span class="exp-text">Yıllık<br>Tecrübe</span>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-tag">Hakkımızda</span>
+                <h2>Banaz'ın <span class="text-accent">Güvenilir</span> Servisi</h2>
+                <p>Ölmezler Araç Servis Merkezi olarak Banaz/Uşak'ta uzun yıllardır araç sahiplerine profesyonel hizmet sunuyoruz. Deneyimli kadromuz ve modern ekipmanlarımızla aracınızın her ihtiyacına çözüm üretiyoruz.</p>
+                <p>Müşteri memnuniyetini ön planda tutarak, şeffaf fiyatlandırma ve garantili işçilik ile çalışıyoruz. Her marka ve model araç için uzman ekibimizle hizmetinizdeyiz.</p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Uzman & Deneyimli Kadro</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Orijinal Yedek Parça</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Garantili İşçilik</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Şeffaf Fiyatlandırma</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Hızlı Teslimat</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Tüm Marka & Modeller</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEDEN BİZ -->
+    <section class="why-us">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Neden Biz?</span>
+                <h2>Bizi Tercih Etmeniz İçin <span class="text-accent">6 Neden</span></h2>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-medal"></i></div>
+                    <h3>Kaliteli İşçilik</h3>
+                    <p>Her işte en yüksek kalite standartlarını uyguluyoruz.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-tags"></i></div>
+                    <h3>Uygun Fiyat</h3>
+                    <p>Piyasa koşullarına göre adil ve rekabetçi fiyatlar.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-clock"></i></div>
+                    <h3>Hızlı Servis</h3>
+                    <p>Aracınızı en kısa sürede teslim ediyoruz.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-handshake"></i></div>
+                    <h3>Güvenilir Hizmet</h3>
+                    <p>15 yılı aşkın tecrübe ve binlerce mutlu müşteri.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-headset"></i></div>
+                    <h3>7/24 Destek</h3>
+                    <p>WhatsApp üzerinden her zaman ulaşabilirsiniz.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-certificate"></i></div>
+                    <h3>Garanti</h3>
+                    <p>Tüm işçilik ve parçalar garantilidir.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RANDEVU -->
+    <section class="appointment" id="randevu">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Online Randevu</span>
+                <h2>Hızlı <span class="text-accent">Randevu</span> Alın</h2>
+                <p>Formu doldurun, size en kısa sürede dönüş yapalım. Ya da doğrudan WhatsApp'tan yazın.</p>
+            </div>
+            <div class="appointment-grid">
+                <form class="appointment-form" id="appointmentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name"><i class="fas fa-user"></i> Ad Soyad *</label>
+                            <input type="text" id="name" name="name" placeholder="Adınız Soyadınız" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> Telefon *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="05XX XXX XX XX" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="vehicle"><i class="fas fa-car"></i> Araç Bilgisi</label>
+                            <input type="text" id="vehicle" name="vehicle" placeholder="Marka, Model, Yıl (örn: Toyota Corolla 2020)">
+                        </div>
+                        <div class="form-group">
+                            <label for="service"><i class="fas fa-wrench"></i> Hizmet Türü *</label>
+                            <select id="service" name="service" required>
+                                <option value="">Seçiniz...</option>
+                                <option value="Motor Mekaniği">Motor Mekaniği</option>
+                                <option value="Şanzıman & Diferansiyel">Şanzıman & Diferansiyel</option>
+                                <option value="Kaporta & Boya">Kaporta & Boya</option>
+                                <option value="Elektrik & Elektronik">Elektrik & Elektronik</option>
+                                <option value="Periyodik Bakım">Periyodik Bakım</option>
+                                <option value="Rot-Balans & Ön Düzen">Rot-Balans & Ön Düzen</option>
+                                <option value="Klima Servisi">Klima Servisi</option>
+                                <option value="Yedek Parça">Yedek Parça</option>
+                                <option value="Diğer">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date"><i class="fas fa-calendar"></i> Tercih Edilen Tarih</label>
+                            <input type="date" id="date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="time"><i class="fas fa-clock"></i> Tercih Edilen Saat</label>
+                            <select id="time" name="time">
+                                <option value="">Seçiniz...</option>
+                                <option value="08:30">08:30</option>
+                                <option value="09:00">09:00</option>
+                                <option value="09:30">09:30</option>
+                                <option value="10:00">10:00</option>
+                                <option value="10:30">10:30</option>
+                                <option value="11:00">11:00</option>
+                                <option value="11:30">11:30</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="13:30">13:30</option>
+                                <option value="14:00">14:00</option>
+                                <option value="14:30">14:30</option>
+                                <option value="15:00">15:00</option>
+                                <option value="15:30">15:30</option>
+                                <option value="16:00">16:00</option>
+                                <option value="16:30">16:30</option>
+                                <option value="17:00">17:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message"><i class="fas fa-comment"></i> Açıklama</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Aracınızın sorununu kısaca açıklayın..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-paper-plane"></i> Randevu Talebi Gönder
+                    </button>
+                    <p class="form-note">* Form gönderildikten sonra WhatsApp'tan onay mesajı alacaksınız.</p>
+                </form>
+                <div class="appointment-info">
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
+                        <h3>WhatsApp ile Randevu</h3>
+                        <p>Doğrudan WhatsApp'tan yazarak da randevu alabilirsiniz.</p>
+                        <a href="https://wa.me/905379292946?text=Merhaba%2C%20randevu%20almak%20istiyorum." class="btn btn-whatsapp" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp'tan Yaz
+                        </a>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon"><i class="fas fa-phone-volume"></i></div>
+                        <h3>Telefon ile Randevu</h3>
+                        <p>Bizi arayarak da randevu oluşturabilirsiniz.</p>
+                        <a href="tel:+905379292946" class="btn btn-primary">
+                            <i class="fas fa-phone"></i> 0537 929 29 46
+                        </a>
+                    </div>
+                    <div class="info-card working-hours">
+                        <div class="info-icon"><i class="fas fa-business-time"></i></div>
+                        <h3>Çalışma Saatleri</h3>
+                        <div class="hours-list">
+                            <div class="hour-row"><span>Pazartesi - Cuma</span><span>08:30 - 18:00</span></div>
+                            <div class="hour-row"><span>Cumartesi</span><span>09:00 - 14:00</span></div>
+                            <div class="hour-row closed"><span>Pazar</span><span>Kapalı</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- İLETİŞİM -->
+    <section class="contact" id="iletisim">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">İletişim</span>
+                <h2>Bize <span class="text-accent">Ulaşın</span></h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-cards">
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
+                        <h3>Adres</h3>
+                        <p>Namık Kemal, 64000<br>Banaz/Uşak</p>
+                        <a href="https://maps.google.com/?q=Namık+Kemal+Banaz+Uşak" target="_blank" class="link-arrow">
+                            Haritada Göster <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <h3>Telefon</h3>
+                        <p>0537 929 29 46</p>
+                        <a href="tel:+905379292946" class="link-arrow">
+                            Hemen Ara <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                        <h3>WhatsApp</h3>
+                        <p>0537 929 29 46</p>
+                        <a href="https://wa.me/905379292946" target="_blank" class="link-arrow">
+                            Mesaj Gönder <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1558.5!2d29.75!3d38.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwNDQnMDAuMCJOIDI5wrA0NScwMC4wIkU!5e0!3m2!1str!2str!4v1700000000000" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;border-radius:16px;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <i class="fas fa-wrench"></i>
+                        <span>Ölmezler<span class="logo-accent">Servis</span></span>
+                    </a>
+                    <p>Banaz/Uşak'ta güvenilir araç bakım ve onarım merkezi. 15 yılı aşkın tecrübe ile hizmetinizdeyiz.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Hızlı Erişim</h4>
+                    <ul>
+                        <li><a href="#anasayfa">Ana Sayfa</a></li>
+                        <li><a href="#hizmetler">Hizmetler</a></li>
+                        <li><a href="#hakkimizda">Hakkımızda</a></li>
+                        <li><a href="#randevu">Randevu</a></li>
+                        <li><a href="#iletisim">İletişim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Hizmetler</h4>
+                    <ul>
+                        <li><a href="#hizmetler">Motor Mekaniği</a></li>
+                        <li><a href="#hizmetler">Kaporta & Boya</a></li>
+                        <li><a href="#hizmetler">Periyodik Bakım</a></li>
+                        <li><a href="#hizmetler">Elektrik & Elektronik</a></li>
+                        <li><a href="#hizmetler">Klima Servisi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>İletişim</h4>
+                    <p><i class="fas fa-location-dot"></i> Namık Kemal, Banaz/Uşak</p>
+                    <p><i class="fas fa-phone"></i> 0537 929 29 46</p>
+                    <div class="social-links">
+                        <a href="https://wa.me/905379292946" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ölmezler Araç Servis Merkezi. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/905379292946?text=Merhaba%2C%20bilgi%20almak%20istiyorum." class="floating-whatsapp" target="_blank" aria-label="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="wa-tooltip">Bize Yazın!</span>
+    </a>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal">
+            <div class="modal-icon"><i class="fas fa-check-circle"></i></div>
+            <h3>Randevu Talebiniz Alındı!</h3>
+            <p>En kısa sürede sizinle WhatsApp üzerinden iletişime geçeceğiz.</p>
+            <button class="btn btn-primary" onclick="closeModal()">Tamam</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
