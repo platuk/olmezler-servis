@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiyat Listesi - Ölmezler Servis</title>
+    <meta name="description" content="Ölmezler Araç Servis Merkezi fiyat listesi. Periyodik bakım, motor mekaniği, kaporta, elektrik ve daha fazlası.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15,23,42,0.98);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+        .logo i { color: #f59e0b; }
+        .logo-accent { color: #f59e0b; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.7);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+        .nav-links a.active {
+            color: white;
+            background: rgba(59,130,246,0.2);
+        }
+        .btn-whatsapp-nav {
+            background: #25D366 !important;
+            color: white !important;
+            border-radius: 50px !important;
+            padding: 8px 20px !important;
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(160deg, #1a2332 0%, #243447 40%, #1e2d3d 100%);
+            padding: 80px 24px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+        }
+        .hero-accent {
+            background: linear-gradient(135deg, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Main */
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+        
+        /* Category */
+        .category {
+            margin-bottom: 40px;
+        }
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(59,130,246,0.2);
+        }
+        .category-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(30,64,175,0.2), rgba(59,130,246,0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #60a5fa;
+        }
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        /* Price Table */
+        .price-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+        .price-table thead th {
+            text-align: left;
+            padding: 12px 16px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .price-table tbody tr {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+        .price-table tbody tr:hover {
+            background: rgba(255,255,255,0.06);
+        }
+        .price-table td {
+            padding: 16px;
+            font-size: 0.95rem;
+        }
+        .price-table td:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+        .price-table td:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+        .service-name {
+            font-weight: 600;
+            color: white;
+        }
+        .service-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+        .price-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #4ade80;
+            white-space: nowrap;
+        }
+        .price-action {
+            text-align: right;
+        }
+        .btn-randevu {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(59,130,246,0.15);
+            border: 1px solid rgba(59,130,246,0.3);
+            color: #60a5fa;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-randevu:hover {
+            background: rgba(59,130,246,0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 60px 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+        .cta-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+        .cta-section p {
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 24px;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+        }
+        .btn-primary {
+            background: #1e40af;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #1e3a8a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30,64,175,0.3);
+        }
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        .btn-whatsapp:hover {
+            background: #1ebe5d;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37,211,102,0.3);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #0f172a;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 24px;
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.85rem;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: rgba(255,255,255,0.4);
+        }
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .price-table { font-size: 0.85rem; }
+            .price-table td { padding: 12px 8px; }
+            .price-value { font-size: 1rem; }
+            .btn-randevu { padding: 6px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <a href="/" class="logo">
+            <i class="fas fa-wrench"></i>
+            <span>Ölmezler<span class="logo-accent">Servis</span></span>
+        </a>
+        <div class="nav-links">
+            <a href="/">Ana Sayfa</a>
+            <a href="/#hizmetler">Hizmetler</a>
+            <a href="/#hakkimizda">Hakkımızda</a>
+            <a href="/fiyatlar" class="active">Fiyatlar</a>
+            <a href="/#randevu">Randevu</a>
+            <a href="/#iletisim">İletişim</a>
+            <a href="https://wa.me/905379292946" class="btn-whatsapp-nav" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+        </div>
+    </div>
+    
+    <!-- Hero -->
+    <div class="hero">
+        <h1>Fiyat <span class="hero-accent">Listemiz</span></h1>
+        <p>Şeffaf ve uygun fiyatlarla profesyonel hizmet. Tüm fiyatlarımıza KDV dahildir.</p>
+    </div>
+    
+    <!-- Main -->
+    <div class="main" id="pricesContainer">
+        <div class="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Fiyatlar yükleniyor...</p>
+        </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="main">
+        <div class="cta-section">
+            <h2>Fiyat Bilgisi mi Almak İstiyorsunuz?</h2>
+            <p>Aracınız için özel fiyat teklifi almak için bizimle iletişime geçin.</p>
+            <div class="cta-buttons">
+                <a href="/#randevu" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Randevu Al</a>
+                <a href="https://wa.me/905379292946?text=Merhaba%2C%20fiyat%20bilgisi%20almak%20istiyorum." class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp'tan Yaz</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2024 Ölmezler Araç Servis Merkezi. Tüm hakları saklıdır. | Fiyatlar değişkenlik gösterebilir.</p>
+    </div>
+    
+    <script>
+        // Category icons
+        const categoryIcons = {
+            'Periyodik Bakım': 'fas fa-oil-can',
+            'Motor Mekaniği': 'fas fa-engine',
+            'Şanzıman': 'fas fa-gears',
+            'Elektrik': 'fas fa-bolt',
+            'Kaporta & Boya': 'fas fa-car-burst',
+            'Klima': 'fas fa-snowflake',
+            'Rot-Balans': 'fas fa-circle-notch',
+            'Yedek Parça': 'fas fa-box-open'
+        };
+        
+        // Load prices
+        async function loadPrices() {
+            try {
+                const res = await fetch('/api/prices');
+                const prices = await res.json();
+                
+                const container = document.getElementById('pricesContainer');
+                
+                if (Object.keys(prices).length === 0) {
+                    container.innerHTML = '<div class="loading"><p>Henüz fiyat bilgisi eklenmemiş.</p></div>';
+                    return;
+                }
+                
+                let html = '';
+                
+                for (const [category, items] of Object.entries(prices)) {
+                    const icon = categoryIcons[category] || 'fas fa-wrench';
+                    
+                    html += `
+                        <div class="category">
+                            <div class="category-header">
+                                <div class="category-icon"><i class="${icon}"></i></div>
+                                <h2 class="category-title">${category}</h2>
+                            </div>
+                            <table class="price-table">
+                                <thead>
+                                    <tr>
+                                        <th>Hizmet</th>
+                                        <th>Fiyat</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    
+                    items.forEach(item => {
+                        html += `
+                            <tr>
+                                <td>
+                                    <div class="service-name">${item.service_name}</div>
+                                    ${item.description ? `<div class="service-desc">${item.description}</div>` : ''}
+                                </td>
+                                <td><span class="price-value">${item.price}</span></td>
+                                <td class="price-action">
+                                    <a href="https://wa.me/905379292946?text=Merhaba%2C%20${encodeURIComponent(item.service_name)}%20hizmeti%20hakkında%20bilgi%20almak%20istiyorum." class="btn-randevu" target="_blank">
+                                        <i class="fab fa-whatsapp"></i> Bilgi Al
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = html;
+                
+            } catch (e) {
+                console.error('Price load error:', e);
+                document.getElementById('pricesContainer').innerHTML = '<div class="loading"><p>Fiyatlar yüklenirken hata oluştu.</p></div>';
+            }
+        }
+        
+        // Load prices on page load
+        loadPrices();
+    </script>
+</body>
+</html>

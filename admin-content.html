@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İçerik Yönetimi - Ölmezler Servis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15,23,42,0.98);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+        .logo i { color: #f59e0b; }
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.15); }
+        .active-btn {
+            background: rgba(59,130,246,0.15) !important;
+            border-color: rgba(59,130,246,0.3) !important;
+            color: #60a5fa !important;
+        }
+        
+        /* Main */
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Page Title */
+        .page-title {
+            margin-bottom: 32px;
+        }
+        .page-title h1 {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .page-title h1 i { color: #60a5fa; }
+        .page-title p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Section Card */
+        .section-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .section-header {
+            background: rgba(255,255,255,0.05);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .section-header:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .section-icon.hero { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .section-icon.services { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .section-icon.about { background: rgba(168,85,247,0.15); color: #c084fc; }
+        .section-icon.contact { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .section-icon.hours { background: rgba(236,72,153,0.15); color: #f472b6; }
+        .section-icon.footer { background: rgba(107,114,128,0.15); color: #9ca3af; }
+        .section-title {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+        }
+        .section-subtitle {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 2px;
+        }
+        .section-toggle {
+            color: rgba(255,255,255,0.4);
+            transition: transform 0.3s;
+        }
+        .section-toggle.open {
+            transform: rotate(180deg);
+        }
+        
+        /* Fields */
+        .section-body {
+            padding: 20px;
+            display: none;
+        }
+        .section-body.open {
+            display: block;
+        }
+        .field-group {
+            margin-bottom: 20px;
+        }
+        .field-group:last-child {
+            margin-bottom: 0;
+        }
+        .field-label {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .field-label i {
+            margin-right: 6px;
+            color: rgba(255,255,255,0.4);
+        }
+        .field-hint {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            margin-top: 4px;
+        }
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .field-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255,255,255,0.12);
+        }
+        .field-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+        textarea.field-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        /* Save Button */
+        .save-section {
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.03);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .save-btn {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30,64,175,0.4);
+        }
+        .save-btn.saved {
+            background: linear-gradient(135deg, #059669, #10b981);
+        }
+        .save-status {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+        }
+        
+        /* Message */
+        .message {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .message.success {
+            background: rgba(34,197,94,0.95);
+            color: white;
+        }
+        .message.error {
+            background: rgba(239,68,68,0.95);
+            color: white;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .main { padding: 16px; }
+            .section-header { padding: 12px 16px; }
+            .section-body { padding: 16px; }
+            .header { padding: 12px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <a href="/admin" class="logo">
+                <i class="fas fa-wrench"></i>
+                <span>Admin Paneli</span>
+            </a>
+            <a href="/admin/content" class="back-btn active-btn">
+                <i class="fas fa-edit"></i> İçerik Yönetimi
+            </a>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <a href="/" class="back-btn" target="_blank"><i class="fas fa-eye"></i> Siteyi Önizle</a>
+            <a href="/admin/logout" class="back-btn"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="page-title">
+            <h1><i class="fas fa-edit"></i> Site İçeriğini Düzenle</h1>
+            <p>Aşağıdaki bölümleri açarak sitenizin yazılarını değiştirebilirsiniz. Değişiklikler "Kaydet" butonuna bastığınızda aktif olur.</p>
+        </div>
+        
+        <!-- HERO BÖLÜMÜ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('hero')">
+                <div class="section-header-left">
+                    <div class="section-icon hero"><i class="fas fa-home"></i></div>
+                    <div>
+                        <div class="section-title">Ana Sayfa Başlığı</div>
+                        <div class="section-subtitle">Sitenin en üstündeki büyük yazı ve açıklama</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-hero"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-hero">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-heading"></i> Ana Başlık</label>
+                    <input type="text" class="field-input" id="hero_title" placeholder="Örneğin: Ölmezler">
+                    <div class="field-hint">Sitenin en üstünde görünen büyük başlık</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-heading"></i> Alt Başlık</label>
+                    <input type="text" class="field-input" id="hero_subtitle" placeholder="Örneğin: Araç Servis Merkezi">
+                    <div class="field-hint">Ana başlığın altında görünen ikinci satır</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-align-left"></i> Açıklama Yazısı</label>
+                    <textarea class="field-input" id="hero_description" placeholder="Örneğin: Aracınızın tüm bakım ve onarım ihtiyaçlarında profesyonel çözümler..."></textarea>
+                    <div class="field-hint">Başlığın altında görünen açıklama paragrafı</div>
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-hero"></span>
+                <button class="save-btn" onclick="saveSection('hero')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+        
+        <!-- HİZMETLER BÖLÜMÜ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('services')">
+                <div class="section-header-left">
+                    <div class="section-icon services"><i class="fas fa-wrench"></i></div>
+                    <div>
+                        <div class="section-title">Hizmetlerimiz</div>
+                        <div class="section-subtitle">Verdiğiniz hizmetlerin başlıkları ve açıklamaları</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-services"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-services">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-heading"></i> Bölüm Başlığı</label>
+                    <input type="text" class="field-input" id="services_title" placeholder="Örneğin: Aracınız İçin Profesyonel Çözümler">
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-align-left"></i> Bölüm Açıklaması</label>
+                    <input type="text" class="field-input" id="services_subtitle" placeholder="Örneğin: Her marka ve model araç için kapsamlı servis hizmeti sunuyoruz.">
+                </div>
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h4 style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 16px;">
+                        <i class="fas fa-list"></i> Hizmet Kartları
+                    </h4>
+                    
+                    <div style="display: grid; gap: 16px;">
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">1. Hizmet</label>
+                            <input type="text" class="field-input" id="service_1_title" placeholder="Hizmet adı (örn: Motor Mekaniği)" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_1_desc" placeholder="Kısa açıklama (örn: Motor revizyonu, triger değişimi...)">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">2. Hizmet</label>
+                            <input type="text" class="field-input" id="service_2_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_2_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">3. Hizmet</label>
+                            <input type="text" class="field-input" id="service_3_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_3_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">4. Hizmet</label>
+                            <input type="text" class="field-input" id="service_4_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_4_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">5. Hizmet</label>
+                            <input type="text" class="field-input" id="service_5_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_5_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">6. Hizmet</label>
+                            <input type="text" class="field-input" id="service_6_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_6_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">7. Hizmet</label>
+                            <input type="text" class="field-input" id="service_7_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_7_desc" placeholder="Kısa açıklama">
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 10px;">
+                            <label class="field-label">8. Hizmet</label>
+                            <input type="text" class="field-input" id="service_8_title" placeholder="Hizmet adı" style="margin-bottom: 8px;">
+                            <input type="text" class="field-input" id="service_8_desc" placeholder="Kısa açıklama">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-services"></span>
+                <button class="save-btn" onclick="saveSection('services')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+        
+        <!-- HAKKIMIZDA BÖLÜMÜ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('about')">
+                <div class="section-header-left">
+                    <div class="section-icon about"><i class="fas fa-info-circle"></i></div>
+                    <div>
+                        <div class="section-title">Hakkımızda</div>
+                        <div class="section-subtitle">Şirket tanıtımınız ve açıklamanız</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-about"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-about">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-heading"></i> Başlık</label>
+                    <input type="text" class="field-input" id="about_title" placeholder="Örneğin: Kahramanmaraş'ın Güvenilir Servisi">
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-align-left"></i> Birinci Paragraf</label>
+                    <textarea class="field-input" id="about_desc1" placeholder="Şirketiniz hakkında kısa bilgi..."></textarea>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-align-left"></i> İkinci Paragraf</label>
+                    <textarea class="field-input" id="about_desc2" placeholder="Devam açıklaması..."></textarea>
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-about"></span>
+                <button class="save-btn" onclick="saveSection('about')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+        
+        <!-- İLETİŞİM BÖLÜMÜ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('contact')">
+                <div class="section-header-left">
+                    <div class="section-icon contact"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <div class="section-title">İletişim Bilgileri</div>
+                        <div class="section-subtitle">Telefon, adres, e-posta ve WhatsApp bilgileriniz</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-contact"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-contact">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-phone"></i> Telefon Numarası</label>
+                    <input type="text" class="field-input" id="contact_phone" placeholder="Örneğin: 0537 929 29 46">
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fab fa-whatsapp"></i> WhatsApp Numarası</label>
+                    <input type="text" class="field-input" id="contact_whatsapp" placeholder="Örneğin: 905379292946 (ülke koduyla)">
+                    <div class="field-hint">Başında 0 olmadan, ülke koduyla yazın (90...)</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-map-marker-alt"></i> Adres</label>
+                    <textarea class="field-input" id="contact_address" placeholder="Örneğin: Kahramanmaraş Merkez, Kahramanmaraş"></textarea>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-envelope"></i> E-posta</label>
+                    <input type="email" class="field-input" id="contact_email" placeholder="Örneğin: info@olmezler.com">
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-contact"></span>
+                <button class="save-btn" onclick="saveSection('contact')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+        
+        <!-- ÇALIŞMA SAATLERİ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('hours')">
+                <div class="section-header-left">
+                    <div class="section-icon hours"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="section-title">Çalışma Saatleri</div>
+                        <div class="section-subtitle">Hafta içi, cumartesi ve pazar çalışma saatleriniz</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-hours"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-hours">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-calendar-week"></i> Hafta İçi</label>
+                    <input type="text" class="field-input" id="hours_weekday" placeholder="Örneğin: Pazartesi - Cuma: 08:30 - 18:00">
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-calendar-day"></i> Cumartesi</label>
+                    <input type="text" class="field-input" id="hours_saturday" placeholder="Örneğin: Cumartesi: 09:00 - 14:00">
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-calendar-times"></i> Pazar</label>
+                    <input type="text" class="field-input" id="hours_sunday" placeholder="Örneğin: Pazar: Kapalı">
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-hours"></span>
+                <button class="save-btn" onclick="saveSection('hours')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+        
+        <!-- FOOTER BÖLÜMÜ -->
+        <div class="section-card">
+            <div class="section-header" onclick="toggleSection('footer')">
+                <div class="section-header-left">
+                    <div class="section-icon footer"><i class="fas fa-shoe-prints"></i></div>
+                    <div>
+                        <div class="section-title">Sayfa Altı (Footer)</div>
+                        <div class="section-subtitle">Sitenin en altındaki açıklama ve telif hakkı yazısı</div>
+                    </div>
+                </div>
+                <div class="section-toggle" id="toggle-footer"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="section-body" id="section-footer">
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-align-left"></i> Alt Bilgi Yazısı</label>
+                    <textarea class="field-input" id="footer_desc" placeholder="Örneğin: Kahramanmaraş'ta güvenilir Honda özel servis ve araç bakım merkezi..."></textarea>
+                </div>
+                <div class="field-group">
+                    <label class="field-label"><i class="fas fa-copyright"></i> Telif Hakkı Yazısı</label>
+                    <input type="text" class="field-input" id="footer_copyright" placeholder="Örneğin: © 2024 Ölmezler Araç Servis Merkezi. Tüm hakları saklıdır.">
+                </div>
+            </div>
+            <div class="save-section">
+                <span class="save-status" id="status-footer"></span>
+                <button class="save-btn" onclick="saveSection('footer')">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Message -->
+    <div class="message" id="message">
+        <i class="fas fa-check-circle"></i>
+        <span id="messageText"></span>
+    </div>
+    
+    <script>
+        // Section mapping - field IDs to API keys
+        const sectionFields = {
+            hero: {
+                title: 'hero_title',
+                subtitle: 'hero_subtitle',
+                description: 'hero_description'
+            },
+            services: {
+                title: 'services_title',
+                subtitle: 'services_subtitle',
+                'service_1_title': 'service_1_title',
+                'service_1_description': 'service_1_desc',
+                'service_2_title': 'service_2_title',
+                'service_2_description': 'service_2_desc',
+                'service_3_title': 'service_3_title',
+                'service_3_description': 'service_3_desc',
+                'service_4_title': 'service_4_title',
+                'service_4_description': 'service_4_desc',
+                'service_5_title': 'service_5_title',
+                'service_5_description': 'service_5_desc',
+                'service_6_title': 'service_6_title',
+                'service_6_description': 'service_6_desc',
+                'service_7_title': 'service_7_title',
+                'service_7_description': 'service_7_desc',
+                'service_8_title': 'service_8_title',
+                'service_8_description': 'service_8_desc'
+            },
+            about: {
+                title: 'about_title',
+                description: 'about_desc1',
+                description2: 'about_desc2'
+            },
+            contact: {
+                phone: 'contact_phone',
+                whatsapp: 'contact_whatsapp',
+                address: 'contact_address',
+                email: 'contact_email'
+            },
+            working_hours: {
+                weekday: 'hours_weekday',
+                saturday: 'hours_saturday',
+                sunday: 'hours_sunday'
+            },
+            footer: {
+                description: 'footer_desc',
+                copyright: 'footer_copyright'
+            }
+        };
+        
+        // Load all content
+        async function loadAllContent() {
+            try {
+                const res = await fetch('/api/content');
+                const content = await res.json();
+                
+                // Fill each section
+                for (const [section, fields] of Object.entries(sectionFields)) {
+                    if (content[section]) {
+                        for (const [apiKey, fieldId] of Object.entries(fields)) {
+                            const el = document.getElementById(fieldId);
+                            if (el && content[section][apiKey]) {
+                                el.value = content[section][apiKey];
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Content load error:', e);
+                showMessage('İçerik yüklenirken hata oluştu', 'error');
+            }
+        }
+        
+        // Toggle section
+        function toggleSection(section) {
+            const body = document.getElementById(`section-${section}`);
+            const toggle = document.getElementById(`toggle-${section}`);
+            
+            body.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+        
+        // Save section
+        async function saveSection(section) {
+            const fields = sectionFields[section];
+            const statusEl = document.getElementById(`status-${section}`);
+            
+            statusEl.textContent = 'Kaydediliyor...';
+            
+            let savedCount = 0;
+            let errorCount = 0;
+            
+            for (const [apiKey, fieldId] of Object.entries(fields)) {
+                const el = document.getElementById(fieldId);
+                if (!el) continue;
+                
+                const value = el.value.trim();
+                if (!value) continue; // Skip empty fields
+                
+                try {
+                    const res = await fetch(`/api/content/${section}/${apiKey}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ value: value, type: 'text' })
+                    });
+                    
+                    const data = await res.json();
+                    if (data.success) {
+                        savedCount++;
+                    } else {
+                        errorCount++;
+                    }
+                } catch (e) {
+                    errorCount++;
+                }
+            }
+            
+            if (errorCount === 0) {
+                statusEl.textContent = `${savedCount} alan kaydedildi ✓`;
+                statusEl.style.color = '#4ade80';
+                showMessage('Değişiklikler kaydedildi!', 'success');
+            } else {
+                statusEl.textContent = `${savedCount} kaydedildi, ${errorCount} hata`;
+                statusEl.style.color = '#fca5a5';
+                showMessage('Bazı değişiklikler kaydedilemedi', 'error');
+            }
+            
+            setTimeout(() => {
+                statusEl.textContent = '';
+            }, 3000);
+        }
+        
+        // Show message
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            const msgText = document.getElementById('messageText');
+            msgText.textContent = text;
+            msg.className = `message ${type} show`;
+            
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Initial load
+        loadAllContent();
+        
+        // Open first section by default
+        toggleSection('hero');
+    </script>
+</body>
+</html>

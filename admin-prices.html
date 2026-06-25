@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiyat Yönetimi - Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: rgba(15,23,42,0.98);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+        .logo i { color: #f59e0b; }
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.15); }
+        .nav-btn.active {
+            background: rgba(245,158,11,0.15);
+            border-color: rgba(245,158,11,0.3);
+            color: #fbbf24;
+        }
+        
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .page-title h1 {
+            color: white;
+            font-size: 1.4rem;
+        }
+        .page-title i { color: #fbbf24; }
+        
+        .btn-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #059669, #10b981);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16,185,129,0.4);
+        }
+        
+        /* Price Cards */
+        .price-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.3s;
+        }
+        .price-card:hover {
+            border-color: rgba(59,130,246,0.3);
+        }
+        .price-card.inactive {
+            opacity: 0.5;
+        }
+        .price-info {
+            flex: 1;
+        }
+        .price-category-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(59,130,246,0.15);
+            color: #60a5fa;
+            margin-bottom: 6px;
+        }
+        .price-name {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+        }
+        .price-desc {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+        .price-value {
+            font-weight: 700;
+            color: #4ade80;
+            font-size: 1.2rem;
+            min-width: 100px;
+            text-align: right;
+        }
+        .price-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .btn-edit {
+            background: rgba(59,130,246,0.15);
+            color: #60a5fa;
+        }
+        .btn-edit:hover { background: rgba(59,130,246,0.3); }
+        .btn-toggle {
+            background: rgba(245,158,11,0.15);
+            color: #fbbf24;
+        }
+        .btn-toggle:hover { background: rgba(245,158,11,0.3); }
+        .btn-delete {
+            background: rgba(239,68,68,0.15);
+            color: #fca5a5;
+        }
+        .btn-delete:hover { background: rgba(239,68,68,0.3); }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal {
+            background: #1e293b;
+            border-radius: 20px;
+            padding: 32px;
+            width: 90%;
+            max-width: 500px;
+        }
+        .modal h2 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal h2 i { color: #60a5fa; }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+        .btn-cancel {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.08);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .btn-save {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .message {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        .message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .message.success { background: rgba(34,197,94,0.95); color: white; }
+        .message.error { background: rgba(239,68,68,0.95); color: white; }
+        
+        @media (max-width: 768px) {
+            .price-card { flex-wrap: wrap; }
+            .price-value { min-width: auto; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <a href="/admin" class="logo">
+                <i class="fas fa-wrench"></i>
+                <span>Admin Paneli</span>
+            </a>
+            <a href="/admin/prices" class="nav-btn active">
+                <i class="fas fa-tags"></i> Fiyat Yönetimi
+            </a>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <a href="/fiyatlar" class="nav-btn" target="_blank"><i class="fas fa-eye"></i> Fiyatları Gör</a>
+            <a href="/admin" class="nav-btn"><i class="fas fa-arrow-left"></i> Admin</a>
+        </div>
+    </div>
+    
+    <div class="main">
+        <div class="page-header">
+            <div class="page-title">
+                <i class="fas fa-tags"></i>
+                <h1>Fiyat Yönetimi</h1>
+            </div>
+            <button class="btn-add" onclick="openModal()">
+                <i class="fas fa-plus"></i> Yeni Fiyat Ekle
+            </button>
+        </div>
+        
+        <div id="pricesList">
+            <!-- Prices will be loaded here -->
+        </div>
+    </div>
+    
+    <!-- Add/Edit Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h2><i class="fas fa-tag"></i> <span id="modalTitle">Yeni Fiyat Ekle</span></h2>
+            <input type="hidden" id="editId">
+            <div class="form-group">
+                <label>Kategori *</label>
+                <select id="category">
+                    <option value="Motor">Motor</option>
+                    <option value="Şanzıman">Şanzıman</option>
+                    <option value="Fren">Fren</option>
+                    <option value="Elektrik">Elektrik</option>
+                    <option value="Kaporta">Kaporta</option>
+                    <option value="Klima">Klima</option>
+                    <option value="Bakım">Bakım</option>
+                    <option value="Diğer">Diğer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Hizmet Adı *</label>
+                <input type="text" id="serviceName" placeholder="Örn: Yağ Değişimi">
+            </div>
+            <div class="form-group">
+                <label>Açıklama</label>
+                <input type="text" id="serviceDesc" placeholder="Örn: 5W-30 sentetik yağ dahil">
+            </div>
+            <div class="form-group">
+                <label>Fiyat *</label>
+                <input type="text" id="servicePrice" placeholder="Örn: 750 ₺">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">İptal</button>
+                <button class="btn-save" onclick="savePrice()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="message" id="message"></div>
+    
+    <script>
+        // Load prices
+        async function loadPrices() {
+            try {
+                const res = await fetch('/api/prices/all');
+                const prices = await res.json();
+                
+                const list = document.getElementById('pricesList');
+                
+                if (prices.length === 0) {
+                    list.innerHTML = `
+                        <div style="text-align: center; padding: 60px; color: rgba(255,255,255,0.4);">
+                            <i class="fas fa-tags" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                            <p>Henüz fiyat eklenmemiş.</p>
+                            <p style="margin-top: 8px;">"Yeni Fiyat Ekle" butonuna tıklayarak başlayın.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                list.innerHTML = prices.map(p => `
+                    <div class="price-card ${p.is_active ? '' : 'inactive'}">
+                        <div class="price-info">
+                            <span class="price-category-tag">${p.category}</span>
+                            <div class="price-name">${p.service_name}</div>
+                            ${p.description ? `<div class="price-desc">${p.description}</div>` : ''}
+                        </div>
+                        <div class="price-value">${p.price}</div>
+                        <div class="price-actions">
+                            <button class="btn-icon btn-edit" onclick="editPrice(${p.id}, '${p.category}', '${p.service_name}', '${p.description || ''}', '${p.price}')" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-toggle" onclick="togglePrice(${p.id}, ${p.is_active})" title="${p.is_active ? 'Pasif Yap' : 'Aktif Yap'}">
+                                <i class="fas fa-${p.is_active ? 'eye-slash' : 'eye'}"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="deletePrice(${p.id}, '${p.service_name}')" title="Sil">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (e) {
+                console.error('Error:', e);
+            }
+        }
+        
+        // Open modal
+        function openModal() {
+            document.getElementById('modalTitle').textContent = 'Yeni Fiyat Ekle';
+            document.getElementById('editId').value = '';
+            document.getElementById('category').value = 'Motor';
+            document.getElementById('serviceName').value = '';
+            document.getElementById('serviceDesc').value = '';
+            document.getElementById('servicePrice').value = '';
+            document.getElementById('modal').classList.add('active');
+        }
+        
+        // Edit price
+        function editPrice(id, category, name, desc, price) {
+            document.getElementById('modalTitle').textContent = 'Fiyat Düzenle';
+            document.getElementById('editId').value = id;
+            document.getElementById('category').value = category;
+            document.getElementById('serviceName').value = name;
+            document.getElementById('serviceDesc').value = desc;
+            document.getElementById('servicePrice').value = price;
+            document.getElementById('modal').classList.add('active');
+        }
+        
+        // Close modal
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+        
+        // Save price
+        async function savePrice() {
+            const id = document.getElementById('editId').value;
+            const data = {
+                category: document.getElementById('category').value,
+                service_name: document.getElementById('serviceName').value,
+                description: document.getElementById('serviceDesc').value,
+                price: document.getElementById('servicePrice').value,
+                is_active: 1
+            };
+            
+            if (!data.service_name || !data.price) {
+                showMessage('Hizmet adı ve fiyat zorunludur', 'error');
+                return;
+            }
+            
+            try {
+                const url = id ? `/api/prices/${id}` : '/api/prices';
+                const method = id ? 'PUT' : 'POST';
+                
+                const res = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await res.json();
+                
+                if (result.success) {
+                    showMessage(id ? 'Fiyat güncellendi!' : 'Fiyat eklendi!', 'success');
+                    closeModal();
+                    loadPrices();
+                } else {
+                    showMessage(result.message || 'Hata oluştu', 'error');
+                }
+            } catch (e) {
+                showMessage('Bir hata oluştu', 'error');
+            }
+        }
+        
+        // Toggle active
+        async function togglePrice(id, currentActive) {
+            try {
+                const res = await fetch(`/api/prices/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ is_active: currentActive ? 0 : 1 })
+                });
+                
+                if ((await res.json()).success) {
+                    showMessage(currentActive ? 'Fiyat pasif yapıldı' : 'Fiyat aktif yapıldı', 'success');
+                    loadPrices();
+                }
+            } catch (e) {
+                showMessage('Hata oluştu', 'error');
+            }
+        }
+        
+        // Delete price
+        async function deletePrice(id, name) {
+            if (!confirm(`"${name}" fiyatını silmek istediğinize emin misiniz?`)) return;
+            
+            try {
+                const res = await fetch(`/api/prices/${id}`, { method: 'DELETE' });
+                
+                if ((await res.json()).success) {
+                    showMessage('Fiyat silindi', 'success');
+                    loadPrices();
+                }
+            } catch (e) {
+                showMessage('Hata oluştu', 'error');
+            }
+        }
+        
+        // Show message
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type} show`;
+            setTimeout(() => msg.classList.remove('show'), 3000);
+        }
+        
+        // Initial load
+        loadPrices();
+    </script>
+</body>
+</html>

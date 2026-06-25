@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ölmezler Araç Servis Merkezi | Banaz/Uşak</title>
-    <meta name="description" content="Ölmezler Araç Servis Merkezi - Banaz/Uşak'ta profesyonel araç bakım ve onarım hizmetleri. Motor mekaniği, kaporta, elektrik, periyodik bakım ve daha fazlası.">
+    <title>Ölmezler Araç Servis Merkezi | Kahramanmaraş</title>
+    <meta name="description" content="Ölmezler Araç Servis Merkezi - Kahramanmaraş'ta profesyonel araç bakım ve onarım hizmetleri. Motor mekaniği, kaporta, elektrik, periyodik bakım ve daha fazlası.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -24,11 +24,12 @@
                 <span></span><span></span><span></span>
             </button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#anasayfa">Ana Sayfa</a></li>
-                <li><a href="#hizmetler">Hizmetler</a></li>
-                <li><a href="#hakkimizda">Hakkımızda</a></li>
-                <li><a href="#randevu">Randevu</a></li>
-                <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="/#anasayfa">Ana Sayfa</a></li>
+                <li><a href="/#hizmetler">Hizmetler</a></li>
+                <li><a href="/#hakkimizda">Hakkımızda</a></li>
+                <li><a href="/#randevu">Randevu</a></li>
+                <li><a href="/#iletisim">İletişim</a></li>
+                <li><a href="/chat" class="btn-chat-nav"><i class="fas fa-headset"></i> Canlı Destek</a></li>
                 <li><a href="https://wa.me/905379292946" class="btn-whatsapp-nav" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
             </ul>
         </div>
@@ -36,20 +37,58 @@
 
     <!-- HERO -->
     <section class="hero" id="anasayfa">
-        <div class="hero-overlay"></div>
+        <div class="hero-bg-pattern"></div>
         <div class="container hero-content">
-            <div class="hero-badge"><i class="fas fa-shield-halved"></i> Banaz/Uşak'ın Güvenilir Servisi</div>
-            <h1>Ölmezler<br><span class="hero-accent">Araç Servis Merkezi</span></h1>
-            <p class="hero-desc">Aracınızın tüm bakım ve onarım ihtiyaçlarında profesyonel çözümler. Uzman kadro, orijinal yedek parça ve uygun fiyat garantisi.</p>
-            <div class="hero-buttons">
-                <a href="tel:+905379292946" class="btn btn-primary"><i class="fas fa-phone"></i> Hemen Ara</a>
-                <a href="https://wa.me/905379292946" class="btn btn-whatsapp" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                <a href="#randevu" class="btn btn-outline"><i class="fas fa-calendar-check"></i> Randevu Al</a>
+            <div class="hero-top">
+                <div class="hero-badge" id="heroBadge"><i class="fas fa-shield-halved"></i> <span id="heroBadgeText">7/24 hizmetimiz şu anda aktif</span></div>
+                <h1>Ölmezler<br><span class="hero-accent">Araç Servis Merkezi</span></h1>
+                <p class="hero-desc">Aracınızın tüm bakım ve onarım ihtiyaçlarında profesyonel çözümler. Uzman kadro, orijinal yedek parça ve uygun fiyat garantisi.</p>
             </div>
-            <div class="hero-stats">
-                <div class="stat"><span class="stat-num">15+</span><span class="stat-label">Yıl Tecrübe</span></div>
-                <div class="stat"><span class="stat-num">5000+</span><span class="stat-label">Mutlu Müşteri</span></div>
-                <div class="stat"><span class="stat-num">8</span><span class="stat-label">Uzmanlık Alanı</span></div>
+
+            <!-- MARKA LOGOLARI -->
+            <div class="brands-section">
+                <span class="brands-label">Hizmet Verdiğimiz Markalar</span>
+                <div class="brands-track-wrapper">
+                    <div class="brands-track">
+                        <div class="brand-item"><img src="logos/honda.png" alt="Honda"></div>
+                        <div class="brand-item"><img src="logos/subaru.png" alt="Subaru"></div>
+                        <div class="brand-item"><img src="logos/fiat.png" alt="Fiat"></div>
+                        <div class="brand-item"><img src="logos/bmw.png" alt="BMW"></div>
+                        <div class="brand-item"><img src="logos/alfa-romeo.png" alt="Alfa Romeo"></div>
+                        <div class="brand-item"><img src="logos/mercedes.png" alt="Mercedes"></div>
+                        <!-- Döngü için kopya -->
+                        <div class="brand-item"><img src="logos/honda.png" alt="Honda"></div>
+                        <div class="brand-item"><img src="logos/subaru.png" alt="Subaru"></div>
+                        <div class="brand-item"><img src="logos/fiat.png" alt="Fiat"></div>
+                        <div class="brand-item"><img src="logos/bmw.png" alt="BMW"></div>
+                        <div class="brand-item"><img src="logos/alfa-romeo.png" alt="Alfa Romeo"></div>
+                        <div class="brand-item"><img src="logos/mercedes.png" alt="Mercedes"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AKSİYON KARTLARI -->
+            <div class="hero-actions">
+                <a href="#randevu" class="action-card">
+                    <div class="action-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h3>Randevu Al</h3>
+                    <p>Online randevu oluşturun, sizi bekletmeyelim.</p>
+                </a>
+                <a href="tel:+905379292946" class="action-card">
+                    <div class="action-icon"><i class="fas fa-phone-volume"></i></div>
+                    <h3>Bizi Arayın</h3>
+                    <p data-phone>0537 929 29 46</p>
+                </a>
+                <div class="action-card">
+                    <div class="action-icon"><i class="fas fa-headset"></i></div>
+                    <h3>7/24 Hizmet</h3>
+                    <p>Acil durumlar veya gece hizmetleri için bilgi</p>
+                </div>
+                <a href="#fiyatlar" class="action-card">
+                    <div class="action-icon"><i class="fas fa-tags"></i></div>
+                    <h3>Fiyat Listesi</h3>
+                    <p>Tüm hizmetlerimiz için güncel fiyatları görün.</p>
+                </a>
             </div>
         </div>
         <div class="hero-scroll">
@@ -125,8 +164,8 @@
             </div>
             <div class="about-content">
                 <span class="section-tag">Hakkımızda</span>
-                <h2>Banaz'ın <span class="text-accent">Güvenilir</span> Servisi</h2>
-                <p>Ölmezler Araç Servis Merkezi olarak Banaz/Uşak'ta uzun yıllardır araç sahiplerine profesyonel hizmet sunuyoruz. Deneyimli kadromuz ve modern ekipmanlarımızla aracınızın her ihtiyacına çözüm üretiyoruz.</p>
+                <h2>Kahramanmaraş'ın <span class="text-accent">Güvenilir</span> Servisi</h2>
+                <p>Ölmezler - Honda Özel Servis olarak Kahramanmaraş'ta uzun yıllardır araç sahiplerine profesyonel hizmet sunuyoruz. Honda marka araçlar başta olmak üzere tüm markalara uzman kadromuz ve modern ekipmanlarımızla hizmet veriyoruz.</p>
                 <p>Müşteri memnuniyetini ön planda tutarak, şeffaf fiyatlandırma ve garantili işçilik ile çalışıyoruz. Her marka ve model araç için uzman ekibimizle hizmetinizdeyiz.</p>
                 <div class="about-features">
                     <div class="about-feature">
@@ -284,7 +323,7 @@
                         <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
                         <h3>WhatsApp ile Randevu</h3>
                         <p>Doğrudan WhatsApp'tan yazarak da randevu alabilirsiniz.</p>
-                        <a href="https://wa.me/905379292946?text=Merhaba%2C%20randevu%20almak%20istiyorum." class="btn btn-whatsapp" target="_blank">
+                        <a href="https://wa.me/905379292946?text=Merhaba%2C%20randevu%20almak%20istiyorum." class="btn btn-whatsapp" data-whatsapp target="_blank">
                             <i class="fab fa-whatsapp"></i> WhatsApp'tan Yaz
                         </a>
                     </div>
@@ -293,7 +332,7 @@
                         <h3>Telefon ile Randevu</h3>
                         <p>Bizi arayarak da randevu oluşturabilirsiniz.</p>
                         <a href="tel:+905379292946" class="btn btn-primary">
-                            <i class="fas fa-phone"></i> 0537 929 29 46
+                            <i class="fas fa-phone"></i> <span data-phone>0537 929 29 46</span></button>
                         </a>
                     </div>
                     <div class="info-card working-hours">
@@ -310,6 +349,28 @@
         </div>
     </section>
 
+    <!-- FİYATLAR -->
+    <section class="services" id="fiyatlar" style="background: #0f172a;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Fiyat Listesi</span>
+                <h2>Güncel <span class="text-accent">Fiyatlarımız</span></h2>
+                <p>Tüm hizmetlerimiz için şeffaf fiyat politikamız.</p>
+            </div>
+            <div id="pricesSection">
+                <div style="text-align: center; padding: 40px; color: rgba(255,255,255,0.4);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem;"></i>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 32px;">
+                <p style="color: rgba(255,255,255,0.5); margin-bottom: 16px;">Detaylı bilgi için bizimle iletişime geçin.</p>
+                <a href="https://wa.me/905379292946?text=Merhaba, fiyat bilgisi almak istiyorum." class="btn btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Fiyat Sor
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- İLETİŞİM -->
     <section class="contact" id="iletisim">
         <div class="container">
@@ -322,15 +383,18 @@
                     <div class="contact-card">
                         <div class="contact-icon"><i class="fas fa-location-dot"></i></div>
                         <h3>Adres</h3>
-                        <p>Namık Kemal, 64000<br>Banaz/Uşak</p>
-                        <a href="https://maps.google.com/?q=Namık+Kemal+Banaz+Uşak" target="_blank" class="link-arrow">
+                        <p>Ölmezler - Honda Özel Servis<br>Kahramanmaraş</p>
+                        <a href="https://maps.app.goo.gl/hCgC9WbRHtFGKQHH8" target="_blank" class="link-arrow">
                             Haritada Göster <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="/yerimiz" class="link-arrow" style="margin-top:8px;display:block;">
+                            <i class="fas fa-expand"></i> Tam Ekran Harita
                         </a>
                     </div>
                     <div class="contact-card">
                         <div class="contact-icon"><i class="fas fa-phone"></i></div>
                         <h3>Telefon</h3>
-                        <p>0537 929 29 46</p>
+                        <p data-phone>0537 929 29 46</p>
                         <a href="tel:+905379292946" class="link-arrow">
                             Hemen Ara <i class="fas fa-arrow-right"></i>
                         </a>
@@ -338,15 +402,15 @@
                     <div class="contact-card">
                         <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
                         <h3>WhatsApp</h3>
-                        <p>0537 929 29 46</p>
-                        <a href="https://wa.me/905379292946" target="_blank" class="link-arrow">
+                        <p data-phone>0537 929 29 46</p>
+                        <a href="https://wa.me/905379292946" target="_blank" class="link-arrow" data-whatsapp>
                             Mesaj Gönder <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1558.5!2d29.75!3d38.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwNDQnMDAuMCJOIDI5wrA0NScwMC4wIkU!5e0!3m2!1str!2str!4v1700000000000" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3196.5!2d36.9815546!3d37.5707452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x152de7b4468ea53b%3A0x2aed0ef4818f57f9!2zw5ZMTUVaTEVSIC0gSG9uZGEgw5Z6ZWwgU2VydmlzIEthaHJhbWFubWFyYcWf!5e0!3m2!1str!2str!4v1700000000000" 
                         width="100%" 
                         height="400" 
                         style="border:0;border-radius:16px;" 
@@ -368,7 +432,7 @@
                         <i class="fas fa-wrench"></i>
                         <span>Ölmezler<span class="logo-accent">Servis</span></span>
                     </a>
-                    <p>Banaz/Uşak'ta güvenilir araç bakım ve onarım merkezi. 15 yılı aşkın tecrübe ile hizmetinizdeyiz.</p>
+                    <p>Kahramanmaraş'ta güvenilir Honda özel servis ve araç bakım merkezi. 15 yılı aşkın tecrübe ile hizmetinizdeyiz.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Hızlı Erişim</h4>
@@ -392,10 +456,10 @@
                 </div>
                 <div class="footer-contact">
                     <h4>İletişim</h4>
-                    <p><i class="fas fa-location-dot"></i> Namık Kemal, Banaz/Uşak</p>
-                    <p><i class="fas fa-phone"></i> 0537 929 29 46</p>
+                    <p><i class="fas fa-location-dot"></i> Ölmezler - Honda Özel Servis, Kahramanmaraş</p>
+                    <i class="fas fa-phone"></i> <span data-phone>0537 929 29 46</span></button>
                     <div class="social-links">
-                        <a href="https://wa.me/905379292946" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://wa.me/905379292946" target="_blank" aria-label="WhatsApp" data-whatsapp><i class="fab fa-whatsapp"></i></a>
                         <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                     </div>
@@ -408,7 +472,7 @@
     </footer>
 
     <!-- FLOATING WHATSAPP -->
-    <a href="https://wa.me/905379292946?text=Merhaba%2C%20bilgi%20almak%20istiyorum." class="floating-whatsapp" target="_blank" aria-label="WhatsApp">
+    <a href="https://wa.me/905379292946?text=Merhaba%2C%20bilgi%20almak%20istiyorum." class="floating-whatsapp" data-whatsapp target="_blank" aria-label="WhatsApp">
         <i class="fab fa-whatsapp"></i>
         <span class="wa-tooltip">Bize Yazın!</span>
     </a>

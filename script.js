@@ -1,3 +1,146 @@
+// ==================== LOAD SETTINGS FROM API ====================
+async function loadSettings() {
+    try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.hero_badge) {
+            document.getElementById('heroBadgeText').textContent = data.hero_badge;
+        }
+        if (data.phone) {
+            document.querySelectorAll('[data-phone]').forEach(el => {
+                el.textContent = data.phone;
+                if (el.tagName === 'A') el.href = `tel:${data.phone.replace(/\s/g, '')}`;
+            });
+        }
+        if (data.whatsapp) {
+            document.querySelectorAll('[data-whatsapp]').forEach(el => {
+                if (el.tagName === 'A') el.href = `https://wa.me/${data.whatsapp}`;
+            });
+        }
+    } catch (e) {
+        console.log('Settings loaded from default');
+    }
+}
+loadSettings();
+
+// ==================== LOAD CONTENT FROM API ====================
+async function loadContent() {
+    try {
+        const res = await fetch('/api/content');
+        const content = await res.json();
+        
+        // Hero
+        if (content.hero) {
+            const heroTitle = document.querySelector('.hero h1');
+            const heroDesc = document.querySelector('.hero-desc');
+            if (heroTitle && content.hero.title) {
+                heroTitle.innerHTML = `${content.hero.title}<br><span class="hero-accent">${content.hero.subtitle || ''}</span>`;
+            }
+            if (heroDesc && content.hero.description) {
+                heroDesc.textContent = content.hero.description;
+            }
+        }
+        
+        // About
+        if (content.about) {
+            const aboutTitle = document.querySelector('.about-content h2');
+            const aboutDesc = document.querySelectorAll('.about-content p');
+            if (aboutTitle && content.about.title) {
+                aboutTitle.innerHTML = content.about.title.replace(/'/g, '&#39;');
+            }
+            if (aboutDesc[0] && content.about.description) {
+                aboutDesc[0].textContent = content.about.description;
+            }
+            if (aboutDesc[1] && content.about.description2) {
+                aboutDesc[1].textContent = content.about.description2;
+            }
+        }
+        
+        // Services
+        if (content.services) {
+            const servicesTitle = document.querySelector('.services .section-header h2');
+            const servicesSubtitle = document.querySelector('.services .section-header p');
+            if (servicesTitle && content.services.title) {
+                servicesTitle.innerHTML = content.services.title;
+            }
+            if (servicesSubtitle && content.services.subtitle) {
+                servicesSubtitle.textContent = content.services.subtitle;
+            }
+        }
+        
+        // Service Cards
+        const serviceCards = document.querySelectorAll('.service-card');
+        for (let i = 1; i <= 8; i++) {
+            const key = `service_${i}`;
+            if (content[key] && serviceCards[i-1]) {
+                const title = serviceCards[i-1].querySelector('h3');
+                const desc = serviceCards[i-1].querySelector('p');
+                if (title && content[key].title) title.textContent = content[key].title;
+                if (desc && content[key].description) desc.textContent = content[key].description;
+            }
+        }
+        
+        // Why Us
+        if (content.why_us) {
+            const whyTitle = document.querySelector('.why-us .section-header h2');
+            if (whyTitle && content.why_us.title) {
+                whyTitle.innerHTML = content.why_us.title;
+            }
+        }
+        
+        // Reason Cards
+        const whyCards = document.querySelectorAll('.why-card');
+        for (let i = 1; i <= 6; i++) {
+            const key = `reason_${i}`;
+            if (content[key] && whyCards[i-1]) {
+                const title = whyCards[i-1].querySelector('h3');
+                const desc = whyCards[i-1].querySelector('p');
+                if (title && content[key].title) title.textContent = content[key].title;
+                if (desc && content[key].description) desc.textContent = content[key].description;
+            }
+        }
+        
+        // Contact
+        if (content.contact) {
+            const addressEl = document.querySelector('.contact-card p');
+            const phoneEls = document.querySelectorAll('[data-phone]');
+            if (addressEl && content.contact.address) {
+                addressEl.innerHTML = content.contact.address.replace(/, /g, '<br>');
+            }
+        }
+        
+        // Working Hours
+        if (content.working_hours) {
+            const hourRows = document.querySelectorAll('.hour-row');
+            if (hourRows[0] && content.working_hours.weekday) {
+                hourRows[0].querySelector('span:last-child').textContent = content.working_hours.weekday.split(': ')[1] || '';
+            }
+            if (hourRows[1] && content.working_hours.saturday) {
+                hourRows[1].querySelector('span:last-child').textContent = content.working_hours.saturday.split(': ')[1] || '';
+            }
+            if (hourRows[2] && content.working_hours.sunday) {
+                hourRows[2].querySelector('span:last-child').textContent = content.working_hours.sunday.split(': ')[1] || '';
+            }
+        }
+        
+        // Footer
+        if (content.footer) {
+            const footerDesc = document.querySelector('.footer-brand p');
+            const footerCopy = document.querySelector('.footer-bottom p');
+            if (footerDesc && content.footer.description) {
+                footerDesc.textContent = content.footer.description;
+            }
+            if (footerCopy && content.footer.copyright) {
+                footerCopy.textContent = content.footer.copyright;
+            }
+        }
+        
+    } catch (e) {
+        console.log('Content loaded from default');
+    }
+}
+loadContent();
+
 // ==================== NAVBAR ====================
 const navbar = document.getElementById('navbar');
 const mobileToggle = document.getElementById('mobileToggle');
@@ -58,35 +201,49 @@ const dateInput = document.getElementById('date');
 const today = new Date().toISOString().split('T')[0];
 dateInput.setAttribute('min', today);
 
-appointmentForm.addEventListener('submit', (e) => {
+appointmentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Get form data
     const formData = new FormData(appointmentForm);
     const data = Object.fromEntries(formData);
 
-    // Build WhatsApp message
-    let message = `🔧 *RANDEVU TALEBİ*\n\n`;
-    message += `👤 *Ad Soyad:* ${data.name}\n`;
-    message += `📞 *Telefon:* ${data.phone}\n`;
-    
-    if (data.vehicle) message += `🚗 *Araç:* ${data.vehicle}\n`;
-    message += `🔧 *Hizmet:* ${data.service}\n`;
-    if (data.date) message += `📅 *Tarih:* ${formatDate(data.date)}\n`;
-    if (data.time) message += `⏰ *Saat:* ${data.time}\n`;
-    if (data.message) message += `💬 *Açıklama:* ${data.message}\n`;
+    // Save to database
+    try {
+        const response = await fetch('/api/appointment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+            // Build WhatsApp message
+            let message = `🔧 *RANDEVU TALEBİ*\n\n`;
+            message += `👤 *Ad Soyad:* ${data.name}\n`;
+            message += `📞 *Telefon:* ${data.phone}\n`;
+            
+            if (data.vehicle) message += `🚗 *Araç:* ${data.vehicle}\n`;
+            message += `🔧 *Hizmet:* ${data.service}\n`;
+            if (data.date) message += `📅 *Tarih:* ${formatDate(data.date)}\n`;
+            if (data.time) message += `⏰ *Saat:* ${data.time}\n`;
+            if (data.message) message += `💬 *Açıklama:* ${data.message}\n`;
 
-    message += `\n_Ölmezler Araç Servis Merkezi web sitesinden gönderildi._`;
+            message += `\n_Ölmezler Araç Servis Merkezi web sitesinden gönderildi._`;
 
-    // Open WhatsApp with pre-filled message
-    const whatsappURL = `https://wa.me/905379292946?text=${encodeURIComponent(message)}`;
-    window.open(whatsappURL, '_blank');
+            // Open WhatsApp with pre-filled message
+            const whatsappURL = `https://wa.me/905379292946?text=${encodeURIComponent(message)}`;
+            window.open(whatsappURL, '_blank');
 
-    // Show success modal
-    showModal();
+            // Show success modal
+            showModal();
 
-    // Reset form
-    appointmentForm.reset();
+            // Reset form
+            appointmentForm.reset();
+        }
+    } catch (error) {
+        alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+    }
 });
 
 function formatDate(dateStr) {
@@ -181,42 +338,67 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ==================== COUNTER ANIMATION ====================
-function animateCounters() {
-    const counters = document.querySelectorAll('.stat-num');
-    
-    counters.forEach(counter => {
-        const target = counter.textContent;
-        const num = parseInt(target);
-        const suffix = target.replace(/[0-9]/g, '');
-        
-        if (isNaN(num)) return;
-        
-        let current = 0;
-        const increment = num / 50;
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= num) {
-                counter.textContent = target;
-                clearInterval(timer);
-            } else {
-                counter.textContent = Math.floor(current) + suffix;
-            }
-        }, 30);
-    });
-}
-
-// Trigger counter animation when hero is visible
-const heroObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateCounters();
-            heroObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.5 });
-
-const heroStats = document.querySelector('.hero-stats');
-if (heroStats) heroObserver.observe(heroStats);
+// ==================== ACTION CARDS ANIMATION ====================
+const actionCards = document.querySelectorAll('.action-card');
+actionCards.forEach((card, i) => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(30px)';
+    setTimeout(() => {
+        card.style.transition = 'all 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    }, 800 + (i * 150));
+});
 
 console.log('Ölmezler Araç Servis Merkezi - Website loaded successfully!');
+
+// ==================== LOAD PRICES ON MAIN PAGE ====================
+async function loadPricesSection() {
+    const container = document.getElementById('pricesSection');
+    if (!container) return;
+    
+    try {
+        const res = await fetch('/api/prices');
+        const prices = await res.json();
+        const categories = Object.keys(prices);
+        
+        if (categories.length === 0) {
+            container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.4);">Henüz fiyat eklenmemiş.</p>';
+            return;
+        }
+        
+        let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">';
+        
+        categories.forEach(category => {
+            html += `
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px;">
+                    <h3 style="color: white; font-size: 1.1rem; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fas fa-wrench" style="color: #60a5fa; margin-right: 8px;"></i>${category}
+                    </h3>
+            `;
+            
+            prices[category].forEach(item => {
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div>
+                            <div style="color: white; font-weight: 500;">${item.service_name}</div>
+                            ${item.description ? `<div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-top: 2px;">${item.description}</div>` : ''}
+                        </div>
+                        <div style="color: #4ade80; font-weight: 700; white-space: nowrap; margin-left: 16px;">${item.price}</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+        });
+        
+        html += '</div>';
+        container.innerHTML = html;
+        
+    } catch (e) {
+        container.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.4);">Fiyatlar yüklenemedi.</p>';
+    }
+}
+
+// Load prices on page load
+loadPricesSection();

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli - Ölmezler Servis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: rgba(15,23,42,0.95);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .logo i { color: #f59e0b; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .btn-logout {
+            background: rgba(239,68,68,0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239,68,68,0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(239,68,68,0.25);
+        }
+        
+        /* Main */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 1.2rem;
+        }
+        .stat-icon.total { background: rgba(59,130,246,0.15); color: #60a5fa; }
+        .stat-icon.pending { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .stat-icon.confirmed { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .stat-icon.completed { background: rgba(168,85,247,0.15); color: #c084fc; }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(59,130,246,0.15);
+            border-color: rgba(59,130,246,0.3);
+            color: #60a5fa;
+        }
+        
+        /* Table */
+        .table-container {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: rgba(255,255,255,0.05);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 16px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
+        tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-pending { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .status-confirmed { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .status-completed { background: rgba(168,85,247,0.15); color: #c084fc; }
+        .status-cancelled { background: rgba(239,68,68,0.15); color: #fca5a5; }
+        
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .btn-confirm { background: rgba(34,197,94,0.15); color: #4ade80; }
+        .btn-confirm:hover { background: rgba(34,197,94,0.25); }
+        .btn-complete { background: rgba(168,85,247,0.15); color: #c084fc; }
+        .btn-complete:hover { background: rgba(168,85,247,0.25); }
+        .btn-cancel { background: rgba(239,68,68,0.15); color: #fca5a5; }
+        .btn-cancel:hover { background: rgba(239,68,68,0.25); }
+        .btn-delete { background: rgba(107,114,128,0.15); color: #9ca3af; }
+        .btn-delete:hover { background: rgba(107,114,128,0.25); }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255,255,255,0.4);
+        }
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            table { font-size: 0.85rem; }
+            th, td { padding: 12px 8px; }
+            .action-btns { flex-direction: column; }
+        }
+        
+        /* Alarm Animation */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Content Category Buttons */
+        .content-cat-btn {
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .content-cat-btn:hover, .content-cat-btn.active {
+            background: rgba(245,158,11,0.15);
+            border-color: rgba(245,158,11,0.3);
+            color: #fbbf24;
+        }
+        
+        /* Content Form Fields */
+        .content-field {
+            margin-bottom: 16px;
+        }
+        .content-field label {
+            display: block;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .content-field input, .content-field textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .content-field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .content-field input:focus, .content-field textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-wrench"></i>
+                <span>Ölmezler Servis Admin</span>
+            </div>
+            <div class="header-actions">
+                <a href="/admin/prices" class="btn-logout" style="background: rgba(245,158,11,0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3); margin-right: 8px;"><i class="fas fa-tags"></i> Fiyatlar</a>
+                <a href="/admin/content" class="btn-logout" style="background: rgba(59,130,246,0.15); color: #60a5fa; border-color: rgba(59,130,246,0.3);">
+                    <i class="fas fa-edit"></i> İçerik Yönetimi
+                </a>
+                <a href="/" class="btn-logout"><i class="fas fa-external-link-alt"></i> Siteyi Gör</a>
+                <a href="/admin/logout" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Çıkış</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main">
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon total"><i class="fas fa-calendar-alt"></i></div>
+                <div class="stat-number" id="statTotal">0</div>
+                <div class="stat-label">Toplam Randevu</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+                <div class="stat-number" id="statPending">0</div>
+                <div class="stat-label">Bekleyen</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon confirmed"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-number" id="statConfirmed">0</div>
+                <div class="stat-label">Onaylanan</div>
+            </div>
+            <div class="stat-card" id="chatStatCard" style="cursor: pointer;" onclick="scrollToChats()">
+                <div class="stat-icon" style="background: rgba(34,197,94,0.15); color: #4ade80;"><i class="fas fa-comments"></i></div>
+                <div class="stat-number" id="statUnreadChats">0</div>
+                <div class="stat-label">Okunmamış Mesaj</div>
+            </div>
+        </div>
+        
+        <!-- Alarm -->
+        <div id="chatAlarm" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(239,68,68,0.95); z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 24px;">
+            <div style="font-size: 4rem; color: white; animation: pulse 1s infinite;">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h2 style="color: white; font-size: 2rem; text-align: center;">YENİ MESAJ!</h2>
+            <p id="alarmMessage" style="color: rgba(255,255,255,0.9); font-size: 1.2rem; text-align: center;"></p>
+            <button onclick="closeAlarm()" style="padding: 16px 48px; background: white; color: #ef4444; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s;">
+                <i class="fas fa-times"></i> KAPAT
+            </button>
+        </div>
+        
+        <!-- Filters -->
+        <div class="filters">
+            <button class="filter-btn active" data-status="all">Tümü</button>
+            <button class="filter-btn" data-status="pending">Bekleyen</button>
+            <button class="filter-btn" data-status="confirmed">Onaylanan</button>
+            <button class="filter-btn" data-status="completed">Tamamlanan</button>
+            <button class="filter-btn" data-status="cancelled">İptal</button>
+        </div>
+        
+        <!-- Settings Section -->
+        <div class="settings-section" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; margin-bottom: 24px;">
+            <h3 style="color: white; font-size: 1.1rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-cog" style="color: #60a5fa;"></i> Site Ayarları
+            </h3>
+            
+            <!-- Hero Badge -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 16px; align-items: end; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 6px;">Hero Badge Yazısı</label>
+                        <input type="text" id="heroBadgeInput" style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 0.95rem; font-family: inherit;">
+                    </div>
+                    <button onclick="saveSetting('hero_badge', 'heroBadgeInput')" style="padding: 12px 24px; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap;">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Phone Number -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 16px; align-items: end; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 6px;">Telefon Numarası</label>
+                        <input type="text" id="phoneInput" placeholder="05XX XXX XX XX" style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 0.95rem; font-family: inherit;">
+                    </div>
+                    <button onclick="saveSetting('phone', 'phoneInput')" style="padding: 12px 24px; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap;">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </div>
+            </div>
+            
+            <!-- WhatsApp Number -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; gap: 16px; align-items: end; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <label style="display: block; color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-bottom: 6px;">WhatsApp Numarası (Ülke koduyla: 905XXXXXXXXX)</label>
+                        <input type="text" id="whatsappInput" placeholder="905XXXXXXXXX" style="width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 0.95rem; font-family: inherit;">
+                    </div>
+                    <button onclick="saveSetting('whatsapp', 'whatsappInput')" style="padding: 12px 24px; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 10px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap;">
+                        <i class="fas fa-save"></i> Kaydet
+                    </button>
+                </div>
+            </div>
+            
+            <div id="settingsMessage" style="margin-top: 12px; font-size: 0.85rem; display: none;"></div>
+        </div>
+        
+        <!-- Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Ad Soyad</th>
+                        <th>Telefon</th>
+                        <th>Hizmet</th>
+                        <th>Tarih</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody id="appointmentsTable">
+                </tbody>
+            </table>
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-calendar-times"></i>
+                <p>Henüz randevu bulunmuyor.</p>
+            </div>
+        </div>
+        
+        <!-- Chat Section -->
+        <div id="chatSection" style="margin-top: 32px;">
+            <h3 style="color: white; font-size: 1.2rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-comments" style="color: #4ade80;"></i> Canlı Destek Sohbetleri
+            </h3>
+            <div id="chatList" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Chat items will be added here -->
+            </div>
+        </div>
+        
+        <!-- Content Editor Section -->
+        <div id="contentSection" style="margin-top: 32px;">
+            <h3 style="color: white; font-size: 1.2rem; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-edit" style="color: #f59e0b;"></i> Site İçeriği Düzenle
+            </h3>
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 20px;">
+                Sitedeki tüm yazıları buradan değiştirebilirsiniz. Değişiklikler anında yansır.
+            </p>
+            
+            <!-- Content Categories -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
+                <button onclick="loadContentCategory('hero')" class="content-cat-btn active" data-cat="hero">
+                    <i class="fas fa-home"></i> Ana Sayfa
+                </button>
+                <button onclick="loadContentCategory('about')" class="content-cat-btn" data-cat="about">
+                    <i class="fas fa-info-circle"></i> Hakkımızda
+                </button>
+                <button onclick="loadContentCategory('services')" class="content-cat-btn" data-cat="services">
+                    <i class="fas fa-wrench"></i> Hizmetler
+                </button>
+                <button onclick="loadContentCategory('contact')" class="content-cat-btn" data-cat="contact">
+                    <i class="fas fa-phone"></i> İletişim
+                </button>
+                <button onclick="loadContentCategory('footer')" class="content-cat-btn" data-cat="footer">
+                    <i class="fas fa-shoe-prints"></i> Footer
+                </button>
+            </div>
+            
+            <!-- Content Form -->
+            <div id="contentForm" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px;">
+                <!-- Content fields will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Chat Modal -->
+        <div id="chatModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+            <div style="background: #1e293b; border-radius: 20px; width: 90%; max-width: 600px; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden;">
+                <div style="padding: 16px 20px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <h3 id="chatModalTitle" style="color: white; font-size: 1.1rem;"></h3>
+                        <p id="chatModalSubtitle" style="color: rgba(255,255,255,0.5); font-size: 0.85rem;"></p>
+                    </div>
+                    <button onclick="closeChatModal()" style="background: rgba(255,255,255,0.1); border: none; color: white; width: 36px; height: 36px; border-radius: 50%; cursor: pointer;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="chatModalMessages" style="flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: 400px;">
+                    <!-- Messages will be added here -->
+                </div>
+                <div style="padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 12px;">
+                    <input type="text" id="chatModalInput" placeholder="Mesajınızı yazın..." style="flex: 1; padding: 12px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: white; font-size: 0.95rem;" onkeypress="handleChatModalKeyPress(event)">
+                    <button onclick="sendChatModalMessage()" style="padding: 12px 20px; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 10px; cursor: pointer;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentFilter = 'all';
+        
+        // Load stats
+        async function loadStats() {
+            const res = await fetch('/api/stats');
+            const data = await res.json();
+            document.getElementById('statTotal').textContent = data.total;
+            document.getElementById('statPending').textContent = data.pending;
+            document.getElementById('statConfirmed').textContent = data.confirmed;
+            document.getElementById('statCompleted').textContent = data.completed;
+        }
+        
+        // Load appointments
+        async function loadAppointments() {
+            const res = await fetch(`/api/appointments?status=${currentFilter}`);
+            const data = await res.json();
+            
+            const tbody = document.getElementById('appointmentsTable');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            tbody.innerHTML = data.map(apt => `
+                <tr>
+                    <td>#${apt.id}</td>
+                    <td><strong>${apt.name}</strong></td>
+                    <td><a href="tel:${apt.phone}" style="color: #60a5fa;">${apt.phone}</a></td>
+                    <td>${apt.service}</td>
+                    <td>${apt.date || '-'} ${apt.time || ''}</td>
+                    <td><span class="status-badge status-${apt.status}">${getStatusText(apt.status)}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            ${apt.status === 'pending' ? `<button class="action-btn btn-confirm" onclick="updateStatus(${apt.id}, 'confirmed')"><i class="fas fa-check"></i> Onayla</button>` : ''}
+                            ${apt.status === 'confirmed' ? `<button class="action-btn btn-complete" onclick="updateStatus(${apt.id}, 'completed')"><i class="fas fa-flag-checkered"></i> Tamamla</button>` : ''}
+                            ${apt.status !== 'cancelled' ? `<button class="action-btn btn-cancel" onclick="updateStatus(${apt.id}, 'cancelled')"><i class="fas fa-times"></i> İptal</button>` : ''}
+                            <button class="action-btn btn-delete" onclick="deleteAppointment(${apt.id})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        function getStatusText(status) {
+            const texts = {
+                'pending': 'Bekliyor',
+                'confirmed': 'Onaylandı',
+                'completed': 'Tamamlandı',
+                'cancelled': 'İptal'
+            };
+            return texts[status] || status;
+        }
+        
+        // Update status
+        async function updateStatus(id, status) {
+            await fetch(`/api/appointment/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            loadStats();
+            loadAppointments();
+        }
+        
+        // Delete appointment
+        async function deleteAppointment(id) {
+            if (!confirm('Bu randevuyu silmek istediğinize emin misiniz?')) return;
+            await fetch(`/api/appointment/${id}`, { method: 'DELETE' });
+            loadStats();
+            loadAppointments();
+        }
+        
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.status;
+                loadAppointments();
+            });
+        });
+        
+        // Initial load
+        loadStats();
+        loadAppointments();
+        loadSettings();
+        loadChats();
+        
+        // Poll for new chats every 5 seconds
+        setInterval(loadChats, 5000);
+        setInterval(checkUnreadMessages, 3000);
+        // Refresh chat messages if modal is open
+        setInterval(() => {
+            if (currentChatId) loadChatMessages();
+        }, 2000);
+        
+        // Load settings
+        async function loadSettings() {
+            try {
+                const res = await fetch('/api/settings');
+                const data = await res.json();
+                if (data.hero_badge) document.getElementById('heroBadgeInput').value = data.hero_badge;
+                if (data.phone) document.getElementById('phoneInput').value = data.phone;
+                if (data.whatsapp) document.getElementById('whatsappInput').value = data.whatsapp;
+            } catch (e) {
+                console.error('Settings load error:', e);
+            }
+        }
+        
+        // Save setting (generic)
+        async function saveSetting(key, inputId) {
+            const value = document.getElementById(inputId).value.trim();
+            if (!value) {
+                showSettingsMessage('Lütfen bir değer girin.', 'error');
+                return;
+            }
+            
+            try {
+                const res = await fetch(`/api/settings/${key}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ value })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    showSettingsMessage('Ayar güncellendi!', 'success');
+                } else {
+                    showSettingsMessage('Bir hata oluştu.', 'error');
+                }
+            } catch (e) {
+                showSettingsMessage('Bir hata oluştu.', 'error');
+            }
+        }
+        
+        // Show settings message
+        function showSettingsMessage(text, type) {
+            const msg = document.getElementById('settingsMessage');
+            msg.textContent = text;
+            msg.style.display = 'block';
+            msg.style.color = type === 'success' ? '#4ade80' : '#fca5a5';
+            setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        }
+        
+        // ==================== CHAT FUNCTIONS ====================
+        let currentChatId = null;
+        let lastUnreadCount = 0;
+        
+        // Load chats
+        async function loadChats() {
+            try {
+                const res = await fetch('/api/chats');
+                const chats = await res.json();
+                
+                const chatList = document.getElementById('chatList');
+                chatList.innerHTML = '';
+                
+                if (chats.length === 0) {
+                    chatList.innerHTML = '<div style="text-align: center; padding: 24px; color: rgba(255,255,255,0.4);"><i class="fas fa-comments" style="font-size: 2rem; margin-bottom: 8px;"></i><p>Henüz sohbet yok</p></div>';
+                    return;
+                }
+                
+                chats.forEach(chat => {
+                    const chatItem = document.createElement('div');
+                    chatItem.style.cssText = 'background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.3s;';
+                    chatItem.onmouseover = () => chatItem.style.background = 'rgba(255,255,255,0.08)';
+                    chatItem.onmouseout = () => chatItem.style.background = 'rgba(255,255,255,0.05)';
+                    chatItem.onclick = () => openChat(chat.id, chat.visitor_name);
+                    
+                    chatItem.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #1e40af, #3b82f6); display: flex; align-items: center; justify-content: center; color: white;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <div style="color: white; font-weight: 600;">${chat.visitor_name}</div>
+                                    <div style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">${chat.last_message ? chat.last_message.substring(0, 50) + '...' : 'Mesaj yok'}</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                ${chat.unread_count > 0 ? `<div style="background: #ef4444; color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">${chat.unread_count}</div>` : ''}
+                                <button onclick="event.stopPropagation(); closeChat(${chat.id})" style="background: rgba(239,68,68,0.15); border: none; color: #fca5a5; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                                    <i class="fas fa-times"></i> Kapat
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    chatList.appendChild(chatItem);
+                });
+            } catch (e) {
+                console.error('Chat load error:', e);
+            }
+        }
+        
+        // Check unread messages
+        async function checkUnreadMessages() {
+            try {
+                const res = await fetch('/api/chat/unread-count');
+                const data = await res.json();
+                const count = data.count;
+                
+                document.getElementById('statUnreadChats').textContent = count;
+                
+                // Show alarm if new messages
+                if (count > lastUnreadCount && count > 0) {
+                    showAlarm(count);
+                }
+                lastUnreadCount = count;
+            } catch (e) {
+                console.error('Unread check error:', e);
+            }
+        }
+        
+        // Show alarm
+        function showAlarm(count) {
+            const alarm = document.getElementById('chatAlarm');
+            const message = document.getElementById('alarmMessage');
+            message.textContent = `${count} okunmamış mesajınız var!`;
+            alarm.style.display = 'flex';
+            
+            // Play alarm sound
+            try {
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdH2JkJaQiX14dXJ3f4aLjYuGfnZ0cXV9hoyQjYV9d3RydX2Fi46MhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5CNhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5CNhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5CNhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5CNhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5CNhX13dHF1fYaLkI2FfXd0cXV9houQjYV9d3RxdX2Gi5A=');
+                audio.play().catch(() => {});
+            } catch (e) {}
+        }
+        
+        // Close alarm
+        function closeAlarm() {
+            document.getElementById('chatAlarm').style.display = 'none';
+        }
+        
+        // Open chat modal
+        async function openChat(chatId, visitorName) {
+            currentChatId = chatId;
+            document.getElementById('chatModalTitle').textContent = visitorName;
+            document.getElementById('chatModalSubtitle').textContent = `Sohbet #${chatId}`;
+            document.getElementById('chatModal').style.display = 'flex';
+            
+            // Mark as read
+            await fetch(`/api/chat/${chatId}/read`, { method: 'POST' });
+            
+            // Load messages
+            await loadChatMessages();
+        }
+        
+        // Close chat modal
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+            currentChatId = null;
+            loadChats();
+        }
+        
+        // Load chat messages
+        async function loadChatMessages() {
+            if (!currentChatId) return;
+            
+            try {
+                const res = await fetch(`/api/chat/${currentChatId}/messages`);
+                const messages = await res.json();
+                
+                const container = document.getElementById('chatModalMessages');
+                const currentCount = container.children.length;
+                
+                // Only update if there are new messages
+                if (messages.length !== currentCount) {
+                    container.innerHTML = '';
+                    
+                    messages.forEach(msg => {
+                        const messageDiv = document.createElement('div');
+                        messageDiv.style.cssText = `max-width: 80%; padding: 12px 16px; border-radius: 16px; font-size: 0.95rem; line-height: 1.5; ${msg.sender === 'admin' ? 'align-self: flex-start; background: rgba(30,64,175,0.2); border: 1px solid rgba(30,64,175,0.3); border-bottom-left-radius: 4px;' : 'align-self: flex-end; background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.3); border-bottom-right-radius: 4px;'}`;
+                        messageDiv.innerHTML = `
+                            <div style="color: white;">${msg.message}</div>
+                            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 4px;">${new Date(msg.created_at).toLocaleTimeString('tr-TR', {hour: '2-digit', minute: '2-digit'})}</div>
+                        `;
+                        container.appendChild(messageDiv);
+                    });
+                    
+                    container.scrollTop = container.scrollHeight;
+                    
+                    // Mark as read when viewing
+                    await fetch(`/api/chat/${currentChatId}/read`, { method: 'POST' });
+                }
+            } catch (e) {
+                console.error('Messages load error:', e);
+            }
+        }
+        
+        // Send message from modal
+        async function sendChatModalMessage() {
+            const input = document.getElementById('chatModalInput');
+            const message = input.value.trim();
+            
+            if (!message || !currentChatId) return;
+            
+            try {
+                await fetch(`/api/chat/${currentChatId}/send`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sender: 'admin', message: message })
+                });
+                
+                input.value = '';
+                await loadChatMessages();
+            } catch (e) {
+                console.error('Send error:', e);
+            }
+        }
+        
+        // Handle Enter key in modal
+        function handleChatModalKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatModalMessage();
+            }
+        }
+        
+        // Close chat
+        async function closeChat(chatId) {
+            if (!confirm('Bu sohbeti kapatmak istediğinize emin misiniz?')) return;
+            
+            try {
+                await fetch(`/api/chat/${chatId}/close`, { method: 'POST' });
+                loadChats();
+            } catch (e) {
+                console.error('Close error:', e);
+            }
+        }
+        
+        // Scroll to chats
+        function scrollToChats() {
+            document.getElementById('chatSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // ==================== CONTENT EDITOR FUNCTIONS ====================
+        let currentContentCategory = 'hero';
+        
+        // Content labels for display
+        const contentLabels = {
+            'hero': {
+                'title': 'Ana Başlık',
+                'subtitle': 'Alt Başlık',
+                'description': 'Açıklama'
+            },
+            'about': {
+                'title': 'Başlık',
+                'description': 'Açıklama 1',
+                'description2': 'Açıklama 2'
+            },
+            'services': {
+                'title': 'Başlık',
+                'subtitle': 'Alt Başlık'
+            },
+            'service_1': { 'title': 'Hizmet 1 Başlık', 'description': 'Hizmet 1 Açıklama' },
+            'service_2': { 'title': 'Hizmet 2 Başlık', 'description': 'Hizmet 2 Açıklama' },
+            'service_3': { 'title': 'Hizmet 3 Başlık', 'description': 'Hizmet 3 Açıklama' },
+            'service_4': { 'title': 'Hizmet 4 Başlık', 'description': 'Hizmet 4 Açıklama' },
+            'service_5': { 'title': 'Hizmet 5 Başlık', 'description': 'Hizmet 5 Açıklama' },
+            'service_6': { 'title': 'Hizmet 6 Başlık', 'description': 'Hizmet 6 Açıklama' },
+            'service_7': { 'title': 'Hizmet 7 Başlık', 'description': 'Hizmet 7 Açıklama' },
+            'service_8': { 'title': 'Hizmet 8 Başlık', 'description': 'Hizmet 8 Açıklama' },
+            'contact': {
+                'address': 'Adres',
+                'phone': 'Telefon',
+                'whatsapp': 'WhatsApp',
+                'email': 'E-posta'
+            },
+            'footer': {
+                'description': 'Footer Açıklama',
+                'copyright': 'Copyright'
+            },
+            'working_hours': {
+                'weekday': 'Hafta İçi',
+                'saturday': 'Cumartesi',
+                'sunday': 'Pazar'
+            },
+            'reason_1': { 'title': 'Neden 1 Başlık', 'description': 'Neden 1 Açıklama' },
+            'reason_2': { 'title': 'Neden 2 Başlık', 'description': 'Neden 2 Açıklama' },
+            'reason_3': { 'title': 'Neden 3 Başlık', 'description': 'Neden 3 Açıklama' },
+            'reason_4': { 'title': 'Neden 4 Başlık', 'description': 'Neden 4 Açıklama' },
+            'reason_5': { 'title': 'Neden 5 Başlık', 'description': 'Neden 5 Açıklama' },
+            'reason_6': { 'title': 'Neden 6 Başlık', 'description': 'Neden 6 Açıklama' }
+        };
+        
+        // Load content category
+        async function loadContentCategory(category) {
+            currentContentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.content-cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.cat === category) btn.classList.add('active');
+            });
+            
+            // Load content
+            const form = document.getElementById('contentForm');
+            form.innerHTML = '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">Yükleniyor...</div>';
+            
+            try {
+                // Get all content
+                const res = await fetch('/api/content');
+                const allContent = await res.json();
+                
+                // Get sections for this category
+                let sections = [];
+                if (category === 'hero') sections = ['hero'];
+                else if (category === 'about') sections = ['about'];
+                else if (category === 'services') sections = ['services', 'service_1', 'service_2', 'service_3', 'service_4', 'service_5', 'service_6', 'service_7', 'service_8'];
+                else if (category === 'contact') sections = ['contact', 'working_hours'];
+                else if (category === 'footer') sections = ['footer'];
+                else if (category === 'reasons') sections = ['reason_1', 'reason_2', 'reason_3', 'reason_4', 'reason_5', 'reason_6'];
+                
+                let html = '';
+                
+                sections.forEach(section => {
+                    const sectionContent = allContent[section] || {};
+                    const labels = contentLabels[section] || {};
+                    
+                    html += `<div style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.1);">`;
+                    html += `<h4 style="color: #f59e0b; font-size: 1rem; margin-bottom: 16px; text-transform: uppercase;">${section.replace('_', ' ')}</h4>`;
+                    
+                    Object.keys(labels).forEach(key => {
+                        const value = typeof sectionContent[key] === 'object' ? sectionContent[key].value || '' : sectionContent[key] || '';
+                        const label = labels[key];
+                        const isLong = key.includes('description') || key.includes('subtitle');
+                        
+                        html += `
+                            <div class="content-field">
+                                <label>${label}</label>
+                                ${isLong ? 
+                                    `<textarea id="content_${section}_${key}" onchange="saveContent('${section}', '${key}', this.value)">${value}</textarea>` :
+                                    `<input type="text" id="content_${section}_${key}" value="${value}" onchange="saveContent('${section}', '${key}', this.value)">`
+                                }
+                            </div>
+                        `;
+                    });
+                    
+                    html += `</div>`;
+                });
+                
+                form.innerHTML = html || '<div style="text-align: center; padding: 20px; color: rgba(255,255,255,0.5);">Bu kategoride içerik bulunamadı.</div>';
+                
+            } catch (e) {
+                form.innerHTML = '<div style="text-align: center; padding: 20px; color: #fca5a5;">İçerik yüklenirken hata oluştu.</div>';
+                console.error('Content load error:', e);
+            }
+        }
+        
+        // Save content
+        async function saveContent(section, key, value) {
+            try {
+                const res = await fetch(`/api/content/${section}/${key}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ value: value })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    // Show success indicator
+                    const field = document.getElementById(`content_${section}_${key}`);
+                    if (field) {
+                        field.style.borderColor = '#4ade80';
+                        setTimeout(() => { field.style.borderColor = ''; }, 2000);
+                    }
+                }
+            } catch (e) {
+                console.error('Content save error:', e);
+            }
+        }
+        
+        // Load initial content category
+        loadContentCategory('hero');
+        
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadStats();
+            loadAppointments();
+        }, 30000);
+    </script>
+</body>
+</html>
