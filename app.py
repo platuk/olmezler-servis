@@ -268,7 +268,8 @@ def init_db():
     default_settings = {
         'hero_badge': '7/24 hizmetimiz şu anda aktif',
         'site_title': 'Ölmezler Araç Servis Merkezi',
-        'phone': '0537 929 29 46'
+        'phone': '0537 929 29 46',
+        'whatsapp': '905379292946'
     }
     for key, value in default_settings.items():
         conn.execute('INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)', (key, value))
@@ -690,7 +691,7 @@ def get_settings():
 @app.route('/api/settings/<key>', methods=['GET'])
 def get_setting(key):
     # Key değerini doğrula
-    allowed_keys = ['hero_badge', 'site_title', 'phone']
+    allowed_keys = ['hero_badge', 'site_title', 'phone', 'whatsapp']
     if key not in allowed_keys:
         return jsonify({'error': 'Geçersiz ayar'}), 400
     
@@ -705,7 +706,7 @@ def get_setting(key):
 @login_required
 def update_setting(key):
     # Key değerini doğrula
-    allowed_keys = ['hero_badge', 'site_title', 'phone']
+    allowed_keys = ['hero_badge', 'site_title', 'phone', 'whatsapp']
     if key not in allowed_keys:
         return jsonify({'success': False, 'message': 'Geçersiz ayar'}), 400
     
